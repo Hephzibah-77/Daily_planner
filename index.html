@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Reminder</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial;
+
+            /* Background Image */
+           background-color: #F5D7BF;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* transparent white */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 80%;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        ul {
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            list-style: none;
+            background: #f9f9f9;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .done {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        a {
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .done-btn {
+            color: green;
+        }
+
+        .date {
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>⏰ Daily Reminder</h1>
+
+    <form action="/add" method="POST">
+        <input type="text" name="task" placeholder="Enter task..." required>
+        <input type="date" name="date" required>
+        <input type="time" name="time" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for t in tasks %}
+        <li>
+            <div>
+                <span class="{% if t.done %}done{% endif %}">
+                    {{ t.task }}
+                </span>
+                <div class="date">
+                    📅 {{ t.date }} ⏰ {{ t.time }}
+                </div>
+            </div>
+            <div>
+                {% if not t.done %}
+                <a class="done-btn" href="/done/{{ loop.index0 }}">✔</a>
+                {% endif %}
+                <a href="/delete/{{ loop.index0 }}">❌</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+</body>
+</html>
